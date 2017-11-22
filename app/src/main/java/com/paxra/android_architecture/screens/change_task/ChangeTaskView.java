@@ -8,6 +8,7 @@ import com.paxra.android_architecture.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
@@ -19,11 +20,13 @@ public class ChangeTaskView {
     View save;
     @BindView(R.id.task)
     EditText task;
+    @BindView(R.id.loading)
+    View loading;
 
     public ChangeTaskView(ChangeTaskActivity activity) {
         this.activity = activity;
         view = View.inflate(activity, R.layout.activity_change, null);
-        ButterKnife.bind(view, activity);
+        ButterKnife.bind(this, view);
     }
 
     public View getView() {
@@ -36,5 +39,13 @@ public class ChangeTaskView {
 
     public String getTaskText() {
         return task.getText().toString();
+    }
+
+    public void showProgress(Boolean visibility) {
+        loading.setVisibility(visibility ? View.VISIBLE : View.GONE);
+    }
+
+    public ChangeTaskActivity getActivity() {
+        return activity;
     }
 }

@@ -26,5 +26,4 @@ public class TaskService {
     public void removeTask(Task task) {
         this.appDatabase.taskModel().delete(task);
     }
-
 }

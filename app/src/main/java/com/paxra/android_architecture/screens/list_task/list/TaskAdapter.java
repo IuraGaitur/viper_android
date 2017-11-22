@@ -14,7 +14,7 @@ import io.reactivex.subjects.PublishSubject;
 
 public class TaskAdapter extends RecyclerView.Adapter {
 
-    List<Task> taskList = new ArrayList<>();
+    ArrayList<Task> taskList = new ArrayList<Task>();
     PublishSubject<Integer> removeClickSubject = PublishSubject.create();
 
     @Override

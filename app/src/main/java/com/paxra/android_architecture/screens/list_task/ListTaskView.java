@@ -6,6 +6,7 @@ import android.arch.lifecycle.OnLifecycleEvent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout;
 import com.jakewharton.rxbinding2.view.RxMenuItem;
 import com.paxra.android_architecture.R;
 import com.paxra.android_architecture.data.domain.Task;
@@ -46,7 +48,9 @@ public class ListTaskView {
         this.taskAdapter = taskAdapter;
         view = View.inflate(activity, R.layout.activity_task_list, null);
         ButterKnife.bind(this, view);
-
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(activity);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(taskAdapter);
     }
 
     public View getView() {
@@ -64,12 +68,16 @@ public class ListTaskView {
         return RxMenuItem.clicks(saveItem);
     }
 
+    public Observable<Object> swipeToRefreshObservable() {
+        return RxSwipeRefreshLayout.refreshes(refreshLayout);
+    }
+
     public AppCompatActivity getActivity() {
         return activity;
     }
 
     public void swapData(List<Task> tasks) {
-
+        taskAdapter.swapData(tasks);
     }
 
     public void setTootlbar() {
@@ -80,9 +88,12 @@ public class ListTaskView {
         this.toolbar.setTitle(toolbarTitle);
     }
 
-
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     public void showToast() {
         Snackbar.make(view, "On Resume called", Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void showRefresh(boolean show) {
+        refreshLayout.setRefreshing(show);
     }
 }

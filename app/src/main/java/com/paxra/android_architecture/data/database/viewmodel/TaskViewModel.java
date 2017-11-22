@@ -23,13 +23,16 @@ public class TaskViewModel extends AndroidViewModel{
     private LiveData<List<Task>> tasks;
     private AppDatabase mDb;
 
-    public TaskViewModel(Application application, AppDatabase appDatabase) {
+    public TaskViewModel(Application application) {
         super(application);
-        mDb = appDatabase;
+    }
+
+    public void setDatabase(AppDatabase database) {
+        this.mDb = database;
         subscribeToDbChanges();
     }
 
-    private void subscribeToDbChanges() {
+    public void subscribeToDbChanges() {
         tasks = mDb.taskModel().loaddAlTasks();
     }
 
