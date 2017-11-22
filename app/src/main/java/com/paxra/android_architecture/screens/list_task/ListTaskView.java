@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.jakewharton.rxbinding2.support.v4.widget.RxSwipeRefreshLayout;
 import com.jakewharton.rxbinding2.view.RxMenuItem;
+import com.jakewharton.rxbinding2.widget.RxAdapterView;
 import com.paxra.android_architecture.R;
 import com.paxra.android_architecture.data.domain.Task;
 import com.paxra.android_architecture.screens.list_task.list.TaskAdapter;
@@ -95,5 +96,13 @@ public class ListTaskView {
 
     public void showRefresh(boolean show) {
         refreshLayout.setRefreshing(show);
+    }
+
+    public Observable<Task> removeItemClickObservable() {
+        return taskAdapter.getRemoveClickObservable();
+    }
+
+    public Observable<Task> listItemClick() {
+        return taskAdapter.getEditClickObservable();
     }
 }

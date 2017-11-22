@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import com.paxra.android_architecture.data.api.MainApi;
 import com.paxra.android_architecture.data.database.TaskService;
 import com.paxra.android_architecture.data.database.viewmodel.ListViewModel;
+import com.paxra.android_architecture.data.domain.Task;
 import com.paxra.android_architecture.screens.change_task.ChangeTaskActivity;
 import com.paxra.android_architecture.screens.change_task.ChangeTaskInteractor;
 import com.paxra.android_architecture.screens.change_task.ChangeTaskPresenter;
@@ -23,11 +24,13 @@ import io.reactivex.disposables.CompositeDisposable;
 public class ChangeTaskModule {
 
     private final boolean isEdit;
+    private final Task task;
     private ChangeTaskActivity activity;
 
-    public ChangeTaskModule(ChangeTaskActivity activity, boolean isEdit) {
+    public ChangeTaskModule(ChangeTaskActivity activity, Task task, boolean isEdit) {
         this.activity = activity;
         this.isEdit = isEdit;
+        this.task = task;
     }
 
     @Provides
@@ -41,7 +44,7 @@ public class ChangeTaskModule {
     public ChangeTaskPresenter presenter(ChangeTaskView view, ChangeTaskInteractor interactor, ChangeTaskRouter router,
                                                    RxSchedulers rxSchedulers, ListViewModel viewModel) {
         CompositeDisposable compositeDisposable = new CompositeDisposable();
-        return new ChangeTaskPresenter(view, interactor, router, rxSchedulers, compositeDisposable, isEdit, viewModel);
+        return new ChangeTaskPresenter(view, interactor, router, rxSchedulers, compositeDisposable, task, isEdit, viewModel);
     }
 
     @Provides

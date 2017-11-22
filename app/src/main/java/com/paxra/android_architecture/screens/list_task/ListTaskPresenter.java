@@ -29,6 +29,8 @@ public class ListTaskPresenter {
         initActionBar();
         observeTasks();
         compositeDisposables.add(refreshItemsDisposable());
+        compositeDisposables.add(editItemDisposable());
+        compositeDisposables.add(removeItemDisposable());
     }
 
     private void initActionBar() {
@@ -51,6 +53,17 @@ public class ListTaskPresenter {
                 .subscribe(data -> {
                     view.swapData(data);
                 });
+    }
+
+    private Disposable removeItemDisposable() {
+        return view.removeItemClickObservable().flatMap(task -> {
+            interactor.removeTask(task);
+            return Observable.just(true);
+        }).subscribe(data -> {});
+    }
+
+    private Disposable editItemDisposable() {
+        return view.listItemClick().subscribe(task -> router.startEditTask(task));
     }
 
     public void onDestroy() {

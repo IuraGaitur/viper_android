@@ -19,9 +19,10 @@ public class TaskHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.remove)
     ImageView remove;
 
-    public TaskHolder(View itemView, PublishSubject clickSubject) {
+    public TaskHolder(View itemView, PublishSubject<Integer> editClickSubject, PublishSubject clickSubject) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        ((View)title.getParent()).setOnClickListener(view -> {editClickSubject.onNext(getAdapterPosition());});
         remove.setOnClickListener(view -> {clickSubject.onNext(getAdapterPosition());});
     }
 

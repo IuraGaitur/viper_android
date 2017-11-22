@@ -3,6 +3,7 @@ package com.paxra.android_architecture.screens.change_task;
 import android.util.Log;
 
 import com.paxra.android_architecture.data.database.viewmodel.ListViewModel;
+import com.paxra.android_architecture.data.domain.Task;
 import com.paxra.android_architecture.utils.NumUtils;
 import com.paxra.android_architecture.utils.rx.RxSchedulers;
 
@@ -19,15 +20,17 @@ public class ChangeTaskPresenter {
     private final CompositeDisposable compositeDisposable;
     private final boolean isEdit;
     private final ListViewModel viewModel;
+    private final Task task;
 
     public ChangeTaskPresenter(ChangeTaskView view, ChangeTaskInteractor interactor, ChangeTaskRouter router,
-                               RxSchedulers rxSchedulers, CompositeDisposable compositeDisposable, boolean isEdit,
+                               RxSchedulers rxSchedulers, CompositeDisposable compositeDisposable, Task task, boolean isEdit,
                                ListViewModel viewModel) {
         this.view = view;
         this.interactor = interactor;
         this.router = router;
         this.rxSchedulers = rxSchedulers;
         this.compositeDisposable = compositeDisposable;
+        this.task = task;
         this.isEdit = isEdit;
         this.viewModel = viewModel;
     }
@@ -52,7 +55,7 @@ public class ChangeTaskPresenter {
                 .delay(NumUtils.TIMEOUT_WAIT, TimeUnit.SECONDS)
                 .doOnNext(aVoid -> {
                     if (isEdit) {
-                        interactor.editTask(1, view.getTaskText());
+                        interactor.editTask(task.getId(), view.getTaskText());
                     } else {
                         interactor.saveTask(view.getTaskText());
                     }

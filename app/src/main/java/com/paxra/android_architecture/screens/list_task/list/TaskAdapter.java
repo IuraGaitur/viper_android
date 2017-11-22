@@ -16,10 +16,11 @@ public class TaskAdapter extends RecyclerView.Adapter {
 
     ArrayList<Task> taskList = new ArrayList<Task>();
     PublishSubject<Integer> removeClickSubject = PublishSubject.create();
+    PublishSubject<Integer> editClickSubject = PublishSubject.create();
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new TaskHolder(View.inflate(parent.getContext(), R.layout.list_item, null), removeClickSubject);
+        return new TaskHolder(View.inflate(parent.getContext(), R.layout.list_item, null), editClickSubject, removeClickSubject);
     }
 
     @Override
@@ -27,8 +28,12 @@ public class TaskAdapter extends RecyclerView.Adapter {
         ((TaskHolder) holder).bind(taskList.get(position));
     }
 
-    public io.reactivex.Observable<Task> getClickObservable() {
+    public io.reactivex.Observable<Task> getRemoveClickObservable() {
         return removeClickSubject.map(position -> taskList.get(position));
+    }
+
+    public io.reactivex.Observable<Task> getEditClickObservable() {
+        return editClickSubject.map(position -> taskList.get(position));
     }
 
     public void swapData(List<Task> tasks) {
@@ -40,5 +45,9 @@ public class TaskAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return taskList.size();
+    }
+
+    public Task getItemAtPostion(Integer position) {
+        return taskList.get(position);
     }
 }
